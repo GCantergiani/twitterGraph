@@ -7,7 +7,7 @@ public class Test {
 
 	public static void main(String[] args) throws Exception {
 		
-	SearchPopularKeywords search = new SearchPopularKeywords();
+	SearchAndSave search = new SearchAndSave();
 	
 	search.init();
 	
@@ -19,7 +19,7 @@ public class Test {
 	list.add("Twitter");
 	list.add("Facebook");
 	
-	search.searchPopular(list, 1);
+	search.popularTopicKeywords(list, 1);
 
 	}
 

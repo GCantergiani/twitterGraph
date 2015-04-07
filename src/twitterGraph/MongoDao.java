@@ -1,5 +1,7 @@
 package twitterGraph;
 
+import java.util.List;
+
 import org.mongodb.morphia.Datastore;
 
 import twitter4j.User;
@@ -13,8 +15,8 @@ public class MongoDao {
 		mc = new MongoConnect();
 		db = mc.getDb();
 	}
-	public void insertFL(User userSrc, User userDest, int lvl) {
 
+	public void insertFL(User userSrc, User userDest, int lvl) {
 
 		Nodo nodoSrc = db.find(Nodo.class).field("twitterId")
 				.equal(userSrc.getId()).get();
@@ -42,7 +44,7 @@ public class MongoDao {
 	}
 
 	public void insertFR(User userSrc, User userDest, int lvl) {
-		
+
 		Nodo nodoSrc = db.find(Nodo.class).field("twitterId")
 				.equal(userSrc.getId()).get();
 		if (nodoSrc == null) {
@@ -65,6 +67,20 @@ public class MongoDao {
 			nodoSrc.addFollowing(userDest.getId());
 			db.save(nodoSrc);
 		}
+
+	}
+
+	public List<Long> getFollowersById(Long id) {
+
+		return db.find(Nodo.class).field("twitterId").equal(id).get()
+				.getFollowers();
+
+	}
+
+	public List<Long> getFollowingById(Long id) {
+
+		return db.find(Nodo.class).field("twitterId").equal(id).get()
+				.getFollowing();
 
 	}
 

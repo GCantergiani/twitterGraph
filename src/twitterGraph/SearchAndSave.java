@@ -13,7 +13,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.User;
 
-public class SearchPopularKeywords {
+public class SearchAndSave {
 
 	private final static int FOLLOWER_PODA = 10;
 	private final static int FRIEND_PODA = 10;
@@ -27,7 +27,34 @@ public class SearchPopularKeywords {
 		md = new MongoDao();
 	}
 
-	public void searchPopular(List<String> words, int pages) {
+	public void byId(long id) {
+		if (twitter == null && md == null) {
+			twitter = new TwitterFactory().getInstance();
+			md = new MongoDao();
+		}
+
+		for (Long follower : md.getFollowersById(id)) {
+			try {
+				User user = twitter.showUser(follower);
+				searchFL(user);
+			} catch (TwitterException | InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+		for (Long following : md.getFollowingById(id)) {
+			try {
+				User user = twitter.showUser(following);
+				searchFL(user);
+			} catch (TwitterException | InterruptedException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+
+	public void popularTopicKeywords(List<String> words, int pages) {
 
 		if (twitter == null && md == null) {
 			twitter = new TwitterFactory().getInstance();
